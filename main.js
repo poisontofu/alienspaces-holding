@@ -463,9 +463,11 @@ function init(text) {
   });
   World.add(engine.world, mc);
 
-  // Haptics on drag start/end
-  Events.on(mc, 'startdrag', () => haptics.trigger('buzz'));
-  Events.on(mc, 'enddrag',   () => haptics.cancel());
+  // Haptics — triggered directly from pointer events to stay within the
+  // browser's user-gesture requirement for the Vibration API.
+  document.body.addEventListener('pointerdown', () => haptics.trigger('buzz'), { passive: true });
+  document.body.addEventListener('pointerup',   () => haptics.cancel(),        { passive: true });
+  document.body.addEventListener('pointercancel', () => haptics.cancel(),      { passive: true });
 
   // Prevent Matter.js from swallowing scroll events
   mouse.element.removeEventListener('mousewheel',    mouse.mousewheel);
