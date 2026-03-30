@@ -70,7 +70,7 @@ function reinit(text) {
 function init(text) {
   const myGen = generation;
 
-  document.title = text.charAt(0) + text.slice(1).toLowerCase();
+  document.title = text.charAt(0) + text.slice(1).toUpperCase();
 
   const W = window.innerWidth;
   const H = window.innerHeight;
