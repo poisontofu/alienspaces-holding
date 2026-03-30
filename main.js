@@ -47,6 +47,12 @@ document.getElementById('gravity').addEventListener('click', function () {
 document.getElementById('controls').addEventListener('touchstart', e => e.stopPropagation(), { passive: false });
 document.getElementById('controls').addEventListener('touchend',   e => e.stopPropagation(), { passive: false });
 
+// Buzz on button tap; stop propagation so the body's 'medium' doesn't also fire
+document.getElementById('controls').addEventListener('pointerdown', e => {
+  e.stopPropagation();
+  haptics.trigger('buzz');
+}, { passive: true });
+
 document.fonts.load("900 1em 'TikTok Sans'").then(() => reinit('ALIEN SPACES'));
 
 function reinit(text) {
