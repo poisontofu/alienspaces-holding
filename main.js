@@ -1,9 +1,7 @@
 import Matter from 'matter-js';
-import { WebHaptics } from 'web-haptics';
+const { Engine, Runner, Bodies, Body, World, Mouse, MouseConstraint } = Matter;
 
-const { Engine, Runner, Bodies, Body, World, Mouse, MouseConstraint, Events } = Matter;
-
-const haptics = new WebHaptics();
+const vibrate = (ms) => navigator.vibrate?.(ms);
 
 const ANAGRAMS = [
   'PANIC EASELS',
@@ -465,9 +463,9 @@ function init(text) {
 
   // Haptics — triggered directly from pointer events to stay within the
   // browser's user-gesture requirement for the Vibration API.
-  document.body.addEventListener('pointerdown', () => haptics.trigger('buzz'), { passive: true });
-  document.body.addEventListener('pointerup',   () => haptics.cancel(),        { passive: true });
-  document.body.addEventListener('pointercancel', () => haptics.cancel(),      { passive: true });
+  document.body.addEventListener('pointerdown',   () => vibrate(400), { passive: true });
+  document.body.addEventListener('pointerup',     () => vibrate(0),   { passive: true });
+  document.body.addEventListener('pointercancel', () => vibrate(0),   { passive: true });
 
   // Prevent Matter.js from swallowing scroll events
   mouse.element.removeEventListener('mousewheel',    mouse.mousewheel);
