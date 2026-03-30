@@ -1,0 +1,2 @@
+"use client";
+import{b as r}from"../chunk-4NSAIXAB.mjs";import{useRef as o,useEffect as c,useCallback as s}from"react";function l(t){let e=o(null);c(()=>(e.current=new r(t),()=>{e.current?.destroy(),e.current=null}),[]),c(()=>{e.current?.setDebug(t?.debug??!1)},[t?.debug]),c(()=>{e.current?.setShowSwitch(t?.showSwitch??!1)},[t?.showSwitch]);let n=s((p,a)=>e.current?.trigger(p,a),[]),u=s(()=>e.current?.cancel(),[]),i=r.isSupported;return{trigger:n,cancel:u,isSupported:i}}export{l as useWebHaptics};
