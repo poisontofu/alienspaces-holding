@@ -1,14 +1,6 @@
 import Matter from 'matter-js';
-import { WebHaptics } from 'web-haptics';
 
 const { Engine, Runner, Bodies, Body, World, Mouse, MouseConstraint } = Matter;
-
-const haptics = new WebHaptics();
-// Pre-initialise the hidden iOS checkbox so it exists before the first gesture.
-// The library creates it lazily inside trigger(), but calling trigger() from
-// within a pointerdown handler is synchronous up to the first await, so the
-// checkbox gets created and clicked in the same user-gesture stack frame —
-// which is what iOS requires to fire the Taptic Engine.
 
 
 const ANAGRAMS = [
@@ -47,11 +39,6 @@ document.getElementById('gravity').addEventListener('click', function () {
 document.getElementById('controls').addEventListener('touchstart', e => e.stopPropagation(), { passive: false });
 document.getElementById('controls').addEventListener('touchend',   e => e.stopPropagation(), { passive: false });
 
-// Buzz on button tap; stop propagation so the body's 'medium' doesn't also fire
-document.getElementById('controls').addEventListener('pointerdown', e => {
-  e.stopPropagation();
-  haptics.trigger('buzz');
-}, { passive: true });
 
 document.fonts.load("900 1em 'TikTok Sans'").then(() => reinit('ALIEN SPACES'));
 
@@ -246,8 +233,8 @@ function init(text) {
 
   // --- Object images ---
   const asobjects = [];
-  const OBJECT_MAX_W = Math.round(W * (W < 768 ? 0.306 : 0.153));
-  const OBJECT_MAX_H = Math.round(H * (W < 768 ? 0.506 : 0.43));
+  const OBJECT_MAX_W = Math.round(W * (W < 768 ? 0.25 : 0.15));
+  const OBJECT_MAX_H = Math.round(H * (W < 768 ? 0.25 : 0.45));
 
   // Text exclusion zone (add padding)
   const textTotalW = twoLines
@@ -478,9 +465,6 @@ function init(text) {
   // Haptics — triggered directly from pointer events to stay within the
   // browser's user-gesture requirement for the Vibration API.
   // pointerdown is a direct user gesture — iOS requires this for Taptic Engine
-  document.body.addEventListener('pointerdown',   () => haptics.trigger('medium'), { passive: true });
-  document.body.addEventListener('pointerup',     () => haptics.cancel(),          { passive: true });
-  document.body.addEventListener('pointercancel', () => haptics.cancel(),          { passive: true });
 
   // Prevent Matter.js from swallowing scroll events
   mouse.element.removeEventListener('mousewheel',    mouse.mousewheel);
